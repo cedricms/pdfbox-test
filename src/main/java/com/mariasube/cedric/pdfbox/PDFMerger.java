@@ -16,11 +16,22 @@ public class PDFMerger {
     }
 
     public static void main(String[] args) {
+        File baseDir = new File(".");
+        System.out.println("Base dir : " + baseDir.getAbsolutePath());
+        File[] files = baseDir.listFiles();
+        int i = 0;
+        while (i < files.length) {
+            File file = files[i];
+            System.out.println("Child files : " + file.getAbsolutePath());
+            i++;
+        }
+
         PDFMerger pdfMerger = new PDFMerger();
-        String sourcePdf1 = "./pdf/Pdf1ToMerge.pdf";
-        String sourcePdf2 = "./pdf/Pdf1ToMerge.pdf";
+        String sourcePdf1 = "/pdf/Pdf1ToMerge.pdf";
+        String sourcePdf2 = "/pdf/Pdf1ToMerge.pdf";
         String destinationFilePath = "./pdf/MergedFile.pdf";
-        pdfMerger.mergeDocuments(sourcePdf1, sourcePdf2, destinationFilePath);
+        File mergedFile = pdfMerger.mergeDocuments(sourcePdf1, sourcePdf2, destinationFilePath);
+        System.out.println("Merged file size :  " + mergedFile.length() + ".");
     }
 
     public File mergeDocuments(String sourcePdf1, String sourcePdf2, String destinationFilePath) {
@@ -36,14 +47,23 @@ public class PDFMerger {
             System.out.println(mergedFile.getAbsolutePath() + " correctly initialised.");
         }
 
+        try {
+            mergedFile.getParentFile().mkdir();
+            mergedFile.createNewFile();
+        } catch (IOException ioe) {
+            System.out.println("Unable to create " + mergedFile.getAbsolutePath());
+            ioe.printStackTrace();
+        }
+
         // Merge PDF
         System.out.println("Beginning of merge.");
         PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
 
-        pdfMergerUtility.addSource(sourcePdf1);
+        pdfMergerUtility.addSource(getClass().getResourceAsStream(sourcePdf1));
         System.out.println("PDF 1 added.");
-        pdfMergerUtility.addSource(sourcePdf2);
+        pdfMergerUtility.addSource(getClass().getResourceAsStream(sourcePdf2));
         System.out.println("PDF 2 added.");
+
         pdfMergerUtility.setDestinationFileName(destinationFilePath);
         System.out.println("Merge destination set.");
         try {
