@@ -1,1 +1,0 @@
-{"builders":{"configs":{},"default":"maven"},"mixinTypes":[],"runners":{"configs":{"system:/java/standalone/simple/cli":{"ram":1000,"variables":{},"options":{}}},"default":"system:/java/standalone/simple/cli"},"type":"maven","attributes":{"languageVersion":["1.6"],"language":["java"]}}
