@@ -11,7 +11,10 @@ import org.apache.pdfbox.util.PDFMergerUtility;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
+
+import org.joda.time.Interval;
 
 public class PDFMerger {
 
@@ -23,16 +26,7 @@ public class PDFMerger {
     }
 
     public static void main(String[] args) {
-        File baseDir = new File(".");
-        System.out.println("Base dir : " + baseDir.getAbsolutePath());
-        File[] files = baseDir.listFiles();
-        int i = 0;
-        while (i < files.length) {
-            File file = files[i];
-            System.out.println("Child files : " + file.getAbsolutePath());
-            i++;
-        }
-
+        Calendar startCalendar = Calendar.getInstance();
         PDFMerger pdfMerger = new PDFMerger();
         String sourcePdf1 = "/pdf/Pdf1ToMerge.pdf";
         String sourcePdf2 = "/pdf/Pdf1ToMerge.pdf";
@@ -42,6 +36,10 @@ public class PDFMerger {
 
         File numberedAndMergedFile = pdfMerger.addPageNumbers(mergedFile, "./pdf/NumberedFile.pdf");
         System.out.println("Numbered file size :  " + numberedAndMergedFile.length() + ".");
+
+        Calendar endCalendar = Calendar.getInstance();
+        Interval interval = new Interval(startCalendar.getTimeInMillis(), endCalendar.getTimeInMillis());
+        System.out.println("Generation time :  " + interval.toString() + ".");
     }
 
     public File addPageNumbers(File file, String newFilePath) {
