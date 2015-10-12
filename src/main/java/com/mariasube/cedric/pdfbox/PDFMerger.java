@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.Duration;
 import org.joda.time.Interval;
 
 public class PDFMerger {
@@ -32,14 +33,20 @@ public class PDFMerger {
         String sourcePdf2 = "/pdf/Pdf1ToMerge.pdf";
         String destinationFilePath = "./pdf/MergedFile.pdf";
         File mergedFile = pdfMerger.mergeDocuments(sourcePdf1, sourcePdf2, destinationFilePath);
-        System.out.println("Merged file size :  " + mergedFile.length() + ".");
+        System.out.println("Merged file size (" + mergedFile.getAbsolutePath() + ") :  " + mergedFile.length() + ".");
 
         File numberedAndMergedFile = pdfMerger.addPageNumbers(mergedFile, "./pdf/NumberedFile.pdf");
-        System.out.println("Numbered file size :  " + numberedAndMergedFile.length() + ".");
+        System.out.println("Numbered file size (" + numberedAndMergedFile.getAbsolutePath() + ") :  " + numberedAndMergedFile.length() + ".");
 
         Calendar endCalendar = Calendar.getInstance();
         Interval interval = new Interval(startCalendar.getTimeInMillis(), endCalendar.getTimeInMillis());
-        System.out.println("Generation time :  " + interval.toString() + ".");
+        Duration duration = interval.toDuration();
+        System.out.println("Generation time :  " 
+                           + duration.getStandardDays() + "d " 
+                           + duration.getStandardHours() + "h " 
+                           + duration.getStandardMinutes() + "m " 
+                           + duration.getStandardSeconds() + "s ("
+                           + duration.getMillis() + "ms).");
     }
 
     public File addPageNumbers(File file, String newFilePath) {
